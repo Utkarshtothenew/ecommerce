@@ -87,6 +87,11 @@ class EcommerceAppApplicationTests {
         // ADDING ROLES IN ADMIN
         seller.setRoles(roleSet);
 
+        // SELLER SPECIFIC ATTRIBUTES
+//        seller.setTotalProducts(12);
+//        seller.setType("Fashion Seller");
+
+        // SAVING SELLER
         userRepo.save(seller);
     }
 
@@ -96,9 +101,9 @@ class EcommerceAppApplicationTests {
         customerRohit.setFirstName("Rohit");
         customerRohit.setLastName("Sharma");
         customerRohit.setEmail("rohit.sharma@gmail.com");
-
+//        customerRohit.setPhoneNumber(1233121);
         customerRohit.setPassword("rohitSharma123");
-
+//        customerRohit.setDateOfJoining(new Date());
 
         // DEFINING ROLE TO BUYER
         Role role = new Role();
