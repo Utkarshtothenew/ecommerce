@@ -19,6 +19,7 @@ public class Product {
     private Boolean isReturnable;
     private String brand;
     private Boolean isActive;
+    private Boolean isDeleted;
 
     @Embedded
     private AuditingInformation auditingInformation;
@@ -131,5 +132,13 @@ public class Product {
 
     public void setProductReviews(Set<ProductReview> productReviews) {
         this.productReviews = productReviews;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

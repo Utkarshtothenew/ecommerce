@@ -43,16 +43,7 @@ public class AdminController {
             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "no user found with given id";
         }
-        if (!user.get().isActive()) {
-            user.get().setActive(true);
-            userRepo.save(user.get());
-            // trigger mail
-            sendEmail.sendEmail("ACTIVATED", "HEY CUSTOMER YOUR ACCOUNT HAS BEEN ACTIVATED", user.get().getEmail());
-            return "Success";
-        }
-        userRepo.save(user.get());
-        System.out.println("already activated");
-        return "Success";
+        return activDeactive(id,true);
     }
 
     @PatchMapping("admin/deactivate/customer/{id}")
@@ -62,16 +53,8 @@ public class AdminController {
             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "no user found with given id";
         }
-        if (user.get().isActive()) {
-            user.get().setActive(false);
-            userRepo.save(user.get());
-            // trigger mail
-            sendEmail.sendEmail("DEACTIVATED", "HEY CUSTOMER YOUR ACCOUNT HAS BEEN DEACTIVATED", user.get().getEmail());
-            return "Success";
-        }
-        userRepo.save(user.get());
-        System.out.println("already deactivated");
-        return "Success";
+        return activDeactive(id,false);
+
     }
 
     @PatchMapping("admin/activate/seller/{id}")
@@ -81,16 +64,7 @@ public class AdminController {
             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "no user found with given id";
         }
-        if (!user.get().isActive()) {
-            user.get().setActive(true);
-            userRepo.save(user.get());
-            // trigger mail
-            sendEmail.sendEmail("ACTIVATED", "HEY SELLER YOUR ACCOUNT HAS BEEN ACTIVATED", user.get().getEmail());
-            return "Success";
-        }
-        userRepo.save(user.get());
-        System.out.println("already activated");
-        return "Success";
+        return activDeactive(id,true);
     }
 
     @PatchMapping("admin/deactivate/seller/{id}")
@@ -100,16 +74,7 @@ public class AdminController {
             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "no user found with given id";
         }
-        if (user.get().isActive()) {
-            user.get().setActive(false);
-            userRepo.save(user.get());
-            // trigger mail
-            sendEmail.sendEmail("DEACTIVATED", "HEY SELLER YOUR ACCOUNT HAS BEEN DEACTIVATED", user.get().getEmail());
-            return "Success";
-        }
-        userRepo.save(user.get());
-        System.out.println("already deactivated");
-        return "Success";
+        return activDeactive(id,false);
     }
 
 
@@ -133,5 +98,36 @@ public class AdminController {
         mapping.setFilters(filters);
 
         return mapping;
+    }
+
+    public String activDeactive(Long id, Boolean value) {
+        Optional<User> user = userRepo.findById(id);
+
+        if (value) {
+            if (!user.get().isActive()) {
+                user.get().setActive(true);
+                userRepo.save(user.get());
+                // trigger mail
+                sendEmail.sendEmail("ACTIVATED", "HEY CUSTOMER YOUR ACCOUNT HAS BEEN ACTIVATED", user.get().getEmail());
+                return "Success";
+            }
+            userRepo.save(user.get());
+            System.out.println("already activated");
+            return "Success";
+
+        }
+        else {
+            if (user.get().isActive()) {
+                user.get().setActive(false);
+                userRepo.save(user.get());
+                // trigger mail
+                sendEmail.sendEmail("DEACTIVATED", "HEY CUSTOMER YOUR ACCOUNT HAS BEEN DEACTIVATED", user.get().getEmail());
+                return "Success";
+            }
+            userRepo.save(user.get());
+            System.out.println("already deactivated");
+            return "Success";
+
+        }
     }
 }

@@ -22,20 +22,20 @@ class EcommerceAppApplicationTests {
     @Autowired
     ProductVariationRepo productVariationRepo;
 
-    @Test
-    void testJsonMetadataInProductVariation() {
-        ProductVariation productVariation = new ProductVariation();
-        productVariation.setPrice(1000L);
-        productVariation.setPrimaryImageName("some iamge path");
-        productVariation.setQuantityAvailable(100L);
-        Map<String,Object> map = new HashMap<>();
-        map.put("ram","16gb");
-        map.put("battery","4000mah");
-        productVariation.setMetadata(map);
-
-
-        productVariationRepo.save(productVariation);
-    }
+//    @Test
+//    void testJsonMetadataInProductVariation() {
+//        ProductVariation productVariation = new ProductVariation();
+//        productVariation.setPrice(1000L);
+//        productVariation.setPrimaryImageName("some iamge path");
+//        productVariation.setQuantityAvailable(100L);
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("ram","16gb");
+//        map.put("battery","4000mah");
+//        productVariation.setMetadata(map);
+//
+//
+//        productVariationRepo.save(productVariation);
+//    }
 
 
     @Test
@@ -44,12 +44,12 @@ class EcommerceAppApplicationTests {
         admin.setFirstName("Utkarsh");
         admin.setLastName("Singh");
         admin.setEmail("utkarsh@singh.com");
-//        admin.setPhoneNumber(100);
+//     cmmt   admin.setPhoneNumber(100);
         admin.setPassword("admin");
-//        admin.setDateOfJoining(new Date());
+//     cmmt   admin.setDateOfJoining(new Date());
 
         // ADMIN SPECIFIC ATTRIBUTE
-//        admin.setAdminTask("Give Permissions");
+//    cmmt    admin.setAdminTask("Give Permissions");
 
         // DEFINE ROLE FOR ADMIN
         Role role = new Role();
@@ -71,8 +71,8 @@ class EcommerceAppApplicationTests {
         seller.setLastName("Singh");
         seller.setEmail("rishabh.singh@gmail.com");
         seller.setPassword("rishabSingh123");
-//        seller.setPhoneNumber(9898989);
-//        seller.setDateOfJoining(new Date());
+//       cmmt  seller.setPhoneNumber(9898989);
+//      cmmt   seller.setDateOfJoining(new Date());
 
         // DEFINE ROLE FOR SELLER
         Role role = new Role();
@@ -87,6 +87,11 @@ class EcommerceAppApplicationTests {
         // ADDING ROLES IN ADMIN
         seller.setRoles(roleSet);
 
+        // SELLER SPECIFIC ATTRIBUTES
+//      cmmt  seller.setTotalProducts(12);
+//      cmmt  seller.setType("Fashion Seller");
+
+        // SAVING SELLER
         userRepo.save(seller);
     }
 
@@ -96,9 +101,9 @@ class EcommerceAppApplicationTests {
         customerRohit.setFirstName("Rohit");
         customerRohit.setLastName("Sharma");
         customerRohit.setEmail("rohit.sharma@gmail.com");
-
+//     cmmt   customerRohit.setPhoneNumber(1233121);
         customerRohit.setPassword("rohitSharma123");
-
+//        cmmt customerRohit.setDateOfJoining(new Date());
 
         // DEFINING ROLE TO BUYER
         Role role = new Role();

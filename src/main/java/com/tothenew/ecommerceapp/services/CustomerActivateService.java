@@ -96,7 +96,7 @@ public class CustomerActivateService {
 
             customerActivateRepo.save(localCustomerActivate);
 
-            sendEmail.sendEmail("RE-ACCOUNT ACTIVATE TOKEN", "http://localhost:8080/customer/activate/"+newToken, email);
+            sendEmail.sendEmail("RE-ACCOUNT ACTIVATE TOKEN", "http://localhost:8080/customer/activate/" + newToken, email);
 
             return "Success";
         }

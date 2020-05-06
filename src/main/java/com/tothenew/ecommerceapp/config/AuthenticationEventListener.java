@@ -5,12 +5,15 @@ import com.tothenew.ecommerceapp.entities.users.UserLoginFailCounter;
 import com.tothenew.ecommerceapp.repositories.UserLoginFailCounterRepo;
 import com.tothenew.ecommerceapp.repositories.UserRepo;
 import com.tothenew.ecommerceapp.utils.SendEmail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
@@ -27,15 +30,18 @@ public class AuthenticationEventListener {
     @Autowired
     SendEmail sendEmail;
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationEventListener.class);
+
     @EventListener
     public void authenticationFailed(AuthenticationFailureBadCredentialsEvent event) {
+
         int counter;
         String userEmail = (String) event.getAuthentication().getPrincipal();
         if ("access-token".contentEquals(userEmail)) {
             System.out.println("invalid access token");
             return;
         }
-        System.out.println(userEmail+"----");
+        logger.debug("Logger implemented{}",userEmail);
         Optional<UserLoginFailCounter> userLoginFailCounter = userLoginFailCounterRepo.findByEmail(userEmail);
 
         if (!userLoginFailCounter.isPresent()) {
@@ -50,6 +56,8 @@ public class AuthenticationEventListener {
             if (counter>=2) {
                 User user = userRepo.findByEmail(userEmail);
                 user.setLocked(true);
+                user.setActive(false);
+                user.setLastUpdated(new Date());
                 sendEmail.sendEmail("ACCOUNT LOCKED","YOUR ACCOUNT HAS BEEN LOCKED",userEmail);
                 userRepo.save(user);
             }
