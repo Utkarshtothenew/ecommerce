@@ -84,11 +84,18 @@ public class ProductService {
         productRepo.save(product.get());
         return "Success";
     }
+    public List<Product> viewAllProduct(HttpServletRequest request){
+        return productRepo.findAll();
+
+    }
+
     @Scheduled(cron="0 0 1/12 * * ?")
     public void prodVariationQuantity() {
-           productVariationRepo.activproduct(1);
+           productVariationRepo.activeProduct(1);
 
         }
-    }
+
+
+}
 
 

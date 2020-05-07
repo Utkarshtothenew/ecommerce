@@ -1,12 +1,18 @@
 package com.tothenew.ecommerceapp.controllers;
 
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.tothenew.ecommerceapp.entities.product.Product;
 import com.tothenew.ecommerceapp.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,6 +41,19 @@ public class ProductController {
             }
             return getMessage;
         }
+    @GetMapping("/view/all")
+    public MappingJacksonValue  viewAll(HttpServletRequest request) {
+
+        List<Product> products= productService.viewAllProduct(request);
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("id","name","brand","desc");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("detailsAboutProduct", filter);
+        MappingJacksonValue mapping = new MappingJacksonValue(products);
+        mapping.setFilters(filters);
+
+        return mapping;
+
+
+    }
 
     }
 

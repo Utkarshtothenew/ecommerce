@@ -1,13 +1,17 @@
 package com.tothenew.ecommerceapp.entities.product;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.tothenew.ecommerceapp.entities.category.Category;
 import com.tothenew.ecommerceapp.entities.users.Seller;
 import com.tothenew.ecommerceapp.entities.utils.AuditingInformation;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@JsonFilter("detailsAboutProduct")
+@Where(clause = "Deleted != true")
 public class Product {
 
     @Id
@@ -19,6 +23,7 @@ public class Product {
     private Boolean isReturnable;
     private String brand;
     private Boolean isActive;
+    @Column(name="Deleted")
     private Boolean isDeleted;
 
     @Embedded
