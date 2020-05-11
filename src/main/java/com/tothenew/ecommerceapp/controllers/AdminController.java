@@ -43,7 +43,7 @@ public class AdminController {
             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "no user found with given id";
         }
-        return activDeactive(id,true);
+        return activateDeactivate(id,true);
     }
 
     @PatchMapping("admin/deactivate/customer/{id}")
@@ -53,7 +53,7 @@ public class AdminController {
             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "no user found with given id";
         }
-        return activDeactive(id,false);
+        return activateDeactivate(id,false);
 
     }
 
@@ -64,7 +64,7 @@ public class AdminController {
             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "no user found with given id";
         }
-        return activDeactive(id,true);
+        return activateDeactivate(id,true);
     }
 
     @PatchMapping("admin/deactivate/seller/{id}")
@@ -74,7 +74,7 @@ public class AdminController {
             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "no user found with given id";
         }
-        return activDeactive(id,false);
+        return activateDeactivate(id,false);
     }
 
 
@@ -100,10 +100,10 @@ public class AdminController {
         return mapping;
     }
 
-    public String activDeactive(Long id, Boolean value) {
+    public String activateDeactivate(Long id, Boolean shouldactivate) {
         Optional<User> user = userRepo.findById(id);
 
-        if (value) {
+        if (shouldactivate) {
             if (!user.get().isActive()) {
                 user.get().setActive(true);
                 userRepo.save(user.get());
@@ -112,7 +112,6 @@ public class AdminController {
                 return "Success";
             }
             userRepo.save(user.get());
-            System.out.println("already activated");
             return "Success";
 
         }

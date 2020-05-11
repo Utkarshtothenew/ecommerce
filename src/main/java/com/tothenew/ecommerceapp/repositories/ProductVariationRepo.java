@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ProductVariationRepo extends CrudRepository<ProductVariation,Long> {
     @Query(value = "update product_variation set is_active=false WHERE  quantity_available < :quantity",nativeQuery = true)
-    void activeProduct(@Param("quantity") int quantity);
+    void deactiveProduct(@Param("quantity") int quantity);
 
 }

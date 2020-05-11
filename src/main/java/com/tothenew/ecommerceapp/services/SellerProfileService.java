@@ -65,7 +65,7 @@ public class SellerProfileService {
             throw new InvalidGstException("gst format is invalid");
         }
         Seller seller = sellerRepo.findByEmail(userEmailFromToken.getUserEmail(request));
-        try {
+
             if (sellerProfileDTO.getFirstName() != null) {
                 seller.setFirstName(sellerProfileDTO.getFirstName());
             }
@@ -74,13 +74,10 @@ public class SellerProfileService {
             }
             if (sellerProfileDTO.getCompanyContact() != null) {
                 Seller anotherLocalSeller = sellerRepo.findByCompanyName(sellerProfileDTO.getCompanyName());
-                try {
-                    if (anotherLocalSeller.getCompanyName().equalsIgnoreCase(seller.getCompanyName())) {
+                if (anotherLocalSeller.getCompanyName().equalsIgnoreCase(seller.getCompanyName())) {
                         return "company name should be unique";
                     }
-                } catch (NullPointerException ex) {
-//            ex.printStackTrace();
-                }
+
                 seller.setCompanyContact(sellerProfileDTO.getCompanyContact());
             }
             if (sellerProfileDTO.getCompanyName() != null) {
@@ -92,7 +89,7 @@ public class SellerProfileService {
             if (sellerProfileDTO.getImage() != null) {
                 // check image format and then update
             }
-        } catch (NullPointerException ex) {}
+
 
         sellerRepo.save(seller);
         return "Success";

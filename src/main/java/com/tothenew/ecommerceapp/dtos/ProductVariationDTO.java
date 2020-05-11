@@ -19,7 +19,7 @@ public class ProductVariationDTO {
         this.productId = productId;
     }
 
-    public Map<String, Object> getFiledIdValues() {
+    public Map<String, HashSet<String>> getFiledIdValues() {
         return filedIdValues;
     }
 

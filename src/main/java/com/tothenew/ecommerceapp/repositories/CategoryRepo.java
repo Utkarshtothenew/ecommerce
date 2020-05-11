@@ -12,5 +12,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryRepo extends CrudRepository<Category,Long> {
+    Category findByName(String name);
+
+    @Query(value = "select * from category where parent_id=:id",nativeQuery = true)
+    List<Optional<Category>> findByParentId(@Param("id") Long id);
+
+    @Query(value = "select * from category where parent_id is null",nativeQuery = true)
+    List<Category> findRootCategories();
+
+    @Query(value = "select * from category where name=:name AND parent_id=:parentId",nativeQuery = true)
+    Category findByNameAndParentId(@Param("name") String name,Long parentId);
+
+    @Query(value = "delete from category where id=:id",nativeQuery = true)
+    void deleteById(@Param("id") Long id);
+
 
 }

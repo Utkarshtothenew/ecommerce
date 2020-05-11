@@ -28,7 +28,7 @@ public class UserRegisterService {
     SendEmail sendEmail;
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
-    private UserRepo userRepo;
+    UserRepo userRepo;
 
     public String registerCustomer(Customer customer) {
 //        boolean isValidEmail = validEmail.checkEmailValid(customer.getEmail());
@@ -146,6 +146,51 @@ public class UserRegisterService {
         userRepo.save(seller);
 
         return "Success";
+    }
+    public String activeDeactive(Long id, boolean isActivateRequest) throws Exception{
+        Optional user = userRepo.findById(id);
+        validateActivateDeactivateRequest(isActivateRequest, (User) user.get());
+        ((User) user.get()).setActive(isActivateRequest);
+        userRepo.save(user.get());
+        String activationDeactivationMessage = isActivateRequest ? "ACTIVATED" : "DEACTIVATED";
+        sendEmail.sendEmail(activationDeactivationMessage, "HEY CUSTOMER YOUR ACCOUNT HAS BEEN "+activationDeactivationMessage, ((User) user.get()).getEmail());
+        return "Success";
+/* if (value) {
+if (!user.get().isActive()) {
+user.get().setActive(true);
+userRepo.save(user.get());
+// trigger mail
+sendEmail.sendEmail("ACTIVATED", "HEY CUSTOMER YOUR ACCOUNT HAS BEEN ACTIVATED", user.get().getEmail());
+return "Success";
+}
+userRepo.save(user.get());
+System.out.println("already activated");
+return "Success";
+
+    }
+    else {
+        if (user.get().isActive()) {
+            user.get().setActive(false);
+            userRepo.save(user.get());
+            // trigger mail
+            sendEmail.sendEmail("DEACTIVATED", "HEY CUSTOMER YOUR ACCOUNT HAS BEEN DEACTIVATED", user.get().getEmail());
+            return "Success";
+        }
+        userRepo.save(user.get());
+        System.out.println("already deactivated");
+        return "Success";
+
+    }*/
+
+
+
+    }
+    public void validateActivateDeactivateRequest(boolean isActivateRequest, User user) throws Exception {
+        if (isActivateRequest && user.isActive()) {
+            throw new Exception("User is already active");
+        }  else if (!isActivateRequest && !user.isActive()) {
+            throw new Exception("User is already deactive");
+        }
     }
 
 

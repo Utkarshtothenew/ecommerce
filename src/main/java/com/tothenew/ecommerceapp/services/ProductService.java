@@ -90,8 +90,8 @@ public class ProductService {
     }
 
     @Scheduled(cron="0 0 1/12 * * ?")
-    public void prodVariationQuantity() {
-           productVariationRepo.activeProduct(1);
+    public void deActivateOutOfStockProductVariation() {
+           productVariationRepo.deactiveProduct(1);
 
         }
 

@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @JsonFilter("detailsAboutProduct")
-@Where(clause = "Deleted != true")
+@Where(clause = "isDeleted != true")
 public class Product {
 
     @Id
@@ -23,7 +23,6 @@ public class Product {
     private Boolean isReturnable;
     private String brand;
     private Boolean isActive;
-    @Column(name="Deleted")
     private Boolean isDeleted;
 
     @Embedded
