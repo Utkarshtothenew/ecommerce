@@ -10,8 +10,8 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@JsonFilter("detailsAboutProduct")
-@Where(clause = "isDeleted != true")
+//@JsonFilter("detailsAboutProduct")
+//@Where(clause = "isDeleted != true")
 public class Product {
 
     @Id
@@ -23,7 +23,8 @@ public class Product {
     private Boolean isReturnable;
     private String brand;
     private Boolean isActive;
-    private Boolean isDeleted;
+//    @Column(name="Deleted")
+//    private Boolean isDeleted;
 
     @Embedded
     private AuditingInformation auditingInformation;
@@ -138,11 +139,11 @@ public class Product {
         this.productReviews = productReviews;
     }
 
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
-    }
+//    public Boolean getDeleted() {
+//        return isDeleted;
+//    }
+//
+//    public void setDeleted(Boolean deleted) {
+//        isDeleted = deleted;
+//    }
 }

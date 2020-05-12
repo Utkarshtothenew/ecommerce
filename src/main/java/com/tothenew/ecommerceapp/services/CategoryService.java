@@ -1,5 +1,6 @@
 package com.tothenew.ecommerceapp.services;
 
+import com.tothenew.ecommerceapp.dtos.CategoryDTO;
 import com.tothenew.ecommerceapp.entities.category.Category;
 import com.tothenew.ecommerceapp.exceptions.FieldAlreadyExistException;
 import com.tothenew.ecommerceapp.exceptions.ResourceNotFoundException;
@@ -7,7 +8,11 @@ import com.tothenew.ecommerceapp.repositories.CategoryMetadataFieldValuesRepo;
 import com.tothenew.ecommerceapp.repositories.CategoryRepo;
 import com.tothenew.ecommerceapp.repositories.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +83,14 @@ public class CategoryService {
             return "id is a parent category, cannot delete";
         }
         categoryRepo.deleteById(id);
+        return "Success";
+    }
+
+    public  String updateCategory(String name,Long id){
+        Optional<Category> category=categoryRepo.findById(id);
+        Category updateCategory=category.get();
+        updateCategory.setName(name);
+        categoryRepo.save(updateCategory);
         return "Success";
     }
 

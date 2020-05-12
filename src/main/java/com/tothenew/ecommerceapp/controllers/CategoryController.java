@@ -1,10 +1,12 @@
 package com.tothenew.ecommerceapp.controllers;
 
+import com.tothenew.ecommerceapp.dtos.CategoryDTO;
 import com.tothenew.ecommerceapp.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -33,4 +35,15 @@ public class CategoryController {
         }
         return getMessage;
     }
+    @PutMapping("/update")
+    public String updateCategory( @RequestParam Long id,@RequestParam String name, HttpServletResponse response) {
+        String getMessage = categoryService.updateCategory(name,id);
+        if (getMessage.contains("Success")) {
+            response.setStatus(HttpServletResponse.SC_CREATED);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        return getMessage;
+    }
+
 }

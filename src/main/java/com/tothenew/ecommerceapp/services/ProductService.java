@@ -4,6 +4,7 @@ import com.tothenew.ecommerceapp.entities.category.Category;
 import com.tothenew.ecommerceapp.entities.product.Product;
 import com.tothenew.ecommerceapp.entities.product.ProductVariation;
 import com.tothenew.ecommerceapp.entities.users.Seller;
+import com.tothenew.ecommerceapp.exceptions.ResourceNotFoundException;
 import com.tothenew.ecommerceapp.repositories.CategoryRepo;
 import com.tothenew.ecommerceapp.repositories.ProductRepo;
 import com.tothenew.ecommerceapp.repositories.ProductVariationRepo;
@@ -44,7 +45,7 @@ public class ProductService {
         product.setName(name);
         product.setBrand(brand);
         product.setActive(false);
-        product.setDeleted(false);
+//        product.setDeleted(false);
         Seller seller = sellerRepo.findByEmail(sellerEmail);
         product.setSeller(seller);
 
@@ -80,7 +81,7 @@ public class ProductService {
         }
         Seller seller = sellerRepo.findByEmail(userEmail);
 
-        product.get().setDeleted(true);
+        //product.get().setDeleted(true);
         productRepo.save(product.get());
         return "Success";
     }
@@ -89,11 +90,29 @@ public class ProductService {
 
     }
 
-    @Scheduled(cron="0 0 1/12 * * ?")
-    public void deActivateOutOfStockProductVariation() {
-           productVariationRepo.deactiveProduct(1);
-
+    public String activateDeactivateProduct(Long productId,Boolean activeStatus){
+        Optional<Product> product = productRepo.findById(productId);
+        if (!product.isPresent()) {
+            throw new ResourceNotFoundException(productId+" not found");
         }
+        if(activeStatus){
+            product.get().setActive(activeStatus);
+            productRepo.save(product.get());
+            return "Success";
+        }
+        product.get().setActive(activeStatus);
+        productRepo.save(product.get());
+        return "Success";
+
+    }
+
+
+
+//    @Scheduled(cron="0 0 1/12 * * ?")
+//    public void deActivateOutOfStockProductVariation() {
+//           productVariationRepo.deactiveProduct(1);
+//
+//        }
 
 
 }

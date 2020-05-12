@@ -54,6 +54,28 @@ public class ProductController {
 
 
     }
+    @PutMapping("/admin/activate/{productId}")
+    public String activateProduct(@PathVariable Long productId,HttpServletResponse response) {
+        String getMessage = productService.activateDeactivateProduct(productId,true);
+        if ("Success".contentEquals(getMessage)) {
+            response.setStatus(HttpServletResponse.SC_CREATED);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        return getMessage;
+    }
+
+    @PutMapping("/admin/deactivate/{productId}")
+    public String deactivateProduct(@PathVariable Long productId,HttpServletResponse response) {
+        String getMessage = productService.activateDeactivateProduct(productId, false);
+        if ("Success".contentEquals(getMessage)) {
+            response.setStatus(HttpServletResponse.SC_CREATED);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+        return getMessage;
+    }
+
 
     }
 
