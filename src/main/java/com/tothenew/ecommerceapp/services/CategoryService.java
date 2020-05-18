@@ -2,6 +2,7 @@ package com.tothenew.ecommerceapp.services;
 
 import com.tothenew.ecommerceapp.dtos.CategoryDTO;
 import com.tothenew.ecommerceapp.entities.category.Category;
+import com.tothenew.ecommerceapp.entities.product.Product;
 import com.tothenew.ecommerceapp.exceptions.FieldAlreadyExistException;
 import com.tothenew.ecommerceapp.exceptions.ResourceNotFoundException;
 import com.tothenew.ecommerceapp.repositories.CategoryMetadataFieldValuesRepo;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -84,6 +86,10 @@ public class CategoryService {
         }
         categoryRepo.deleteById(id);
         return "Success";
+    }
+    public List<Category> viewAllCategories(HttpServletRequest request){
+        return (List<Category>) categoryRepo.findAll();
+
     }
 
     public  String updateCategory(String name,Long id){

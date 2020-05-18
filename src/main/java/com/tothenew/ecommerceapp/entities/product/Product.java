@@ -7,12 +7,13 @@ import com.tothenew.ecommerceapp.entities.utils.AuditingInformation;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-//@JsonFilter("detailsAboutProduct")
-//@Where(clause = "isDeleted != true")
-public class Product {
+@JsonFilter("detailsAboutProduct")
+@Where(clause = "deleted != true")
+public class Product  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -23,8 +24,17 @@ public class Product {
     private Boolean isReturnable;
     private String brand;
     private Boolean isActive;
-//    @Column(name="Deleted")
-//    private Boolean isDeleted;
+
+    public boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean deleted;
 
     @Embedded
     private AuditingInformation auditingInformation;
@@ -139,11 +149,5 @@ public class Product {
         this.productReviews = productReviews;
     }
 
-//    public Boolean getDeleted() {
-//        return isDeleted;
-//    }
-//
-//    public void setDeleted(Boolean deleted) {
-//        isDeleted = deleted;
-//    }
+
 }

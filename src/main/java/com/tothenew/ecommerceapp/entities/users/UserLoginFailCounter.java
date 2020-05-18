@@ -1,9 +1,10 @@
 package com.tothenew.ecommerceapp.entities.users;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class UserLoginFailCounter {
+public class UserLoginFailCounter implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

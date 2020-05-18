@@ -4,10 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class CustomerActivate {
+public class CustomerActivate implements Serializable {
 
     private static final int EXPIRATION = 60 * 24;
 

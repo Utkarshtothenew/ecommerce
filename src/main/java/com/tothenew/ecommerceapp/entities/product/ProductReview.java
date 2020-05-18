@@ -4,9 +4,10 @@ import com.tothenew.ecommerceapp.entities.users.Customer;
 import com.tothenew.ecommerceapp.entities.utils.AuditingInformation;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class ProductReview {
+public class ProductReview implements Serializable {
 
     @EmbeddedId
     private CustomerProductReviewId customerProductReviewId;

@@ -13,6 +13,7 @@ import com.tothenew.ecommerceapp.utils.SendEmail;
 import com.tothenew.ecommerceapp.utils.UserEmailFromToken;
 import org.modelmapper.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class ProductService {
         product.setName(name);
         product.setBrand(brand);
         product.setActive(false);
-//        product.setDeleted(false);
+        product.setDeleted(false);
         Seller seller = sellerRepo.findByEmail(sellerEmail);
         product.setSeller(seller);
 
@@ -81,12 +82,13 @@ public class ProductService {
         }
         Seller seller = sellerRepo.findByEmail(userEmail);
 
-        //product.get().setDeleted(true);
+        product.get().setDeleted(true);
         productRepo.save(product.get());
         return "Success";
     }
+
     public List<Product> viewAllProduct(HttpServletRequest request){
-        return productRepo.findAll();
+        return (List<Product>) productRepo.findAll();
 
     }
 
@@ -105,6 +107,11 @@ public class ProductService {
         return "Success";
 
     }
+
+
+
+
+
 
 
 

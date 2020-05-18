@@ -1,10 +1,12 @@
 package com.tothenew.ecommerceapp.controllers;
 
 import com.tothenew.ecommerceapp.dtos.CategoryDTO;
+import com.tothenew.ecommerceapp.entities.category.Category;
 import com.tothenew.ecommerceapp.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
@@ -46,4 +48,9 @@ public class CategoryController {
         return getMessage;
     }
 
+    @GetMapping("/view")
+    public List<Category> viewCategories(HttpServletRequest request){
+        List<Category> categories=categoryService.viewAllCategories(request);
+        return categories;
+    }
 }

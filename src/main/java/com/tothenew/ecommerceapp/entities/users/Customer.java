@@ -7,6 +7,7 @@ import com.tothenew.ecommerceapp.entities.order.OrderTable;
 import com.tothenew.ecommerceapp.entities.product.ProductReview;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 
@@ -14,7 +15,7 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(name="user_id")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonFilter("ignoreAddressInCustomer")
-public class Customer extends User {
+public class Customer extends User implements Serializable {
 
     private String contact;
 

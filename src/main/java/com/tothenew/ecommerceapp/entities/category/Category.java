@@ -4,10 +4,11 @@ import com.tothenew.ecommerceapp.entities.product.Product;
 import com.tothenew.ecommerceapp.entities.utils.AuditingInformation;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-public class Category {
+public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

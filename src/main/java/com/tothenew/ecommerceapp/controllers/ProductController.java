@@ -4,10 +4,11 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.tothenew.ecommerceapp.entities.product.Product;
+import com.tothenew.ecommerceapp.services.RedisService;
 import com.tothenew.ecommerceapp.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,9 @@ import java.util.Optional;
 public class ProductController {
     @Autowired
     ProductService productService;
+
+    @Autowired
+    RedisService redisService;
 
     @PostMapping("/add")
     public String addProduct(@RequestParam("name") String name, @RequestParam("brand") String brand, @RequestParam("categoryId") Long categoryId, @RequestParam("desc") Optional<String> desc, @RequestParam(name = "isCancellable") Optional<Boolean> isCancellable, @RequestParam(name = "isReturnable") Optional<Boolean> isReturnable, String sellerEmail, HttpServletResponse response, HttpServletRequest request) {
@@ -41,6 +45,7 @@ public class ProductController {
             }
             return getMessage;
         }
+
     @GetMapping("/view/all")
     public MappingJacksonValue  viewAll(HttpServletRequest request) {
 
@@ -52,6 +57,14 @@ public class ProductController {
 
         return mapping;
 
+
+    }
+
+    @Cacheable(value= "allProducts")
+    @GetMapping("/view/{id}")
+    public Product viewById(@PathVariable Long Id,HttpServletRequest request){
+        Optional<Product> products=redisService.findById(Id);
+        return products.get();
 
     }
     @PutMapping("/admin/activate/{productId}")

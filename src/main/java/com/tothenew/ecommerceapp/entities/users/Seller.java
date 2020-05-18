@@ -3,11 +3,12 @@ package com.tothenew.ecommerceapp.entities.users;
 import com.tothenew.ecommerceapp.entities.product.Product;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "user_id")
-public class Seller extends User {
+public class Seller extends User implements Serializable {
 
     private String gst;
     private String companyContact;

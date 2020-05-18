@@ -1,13 +1,12 @@
 package com.tothenew.ecommerceapp.controllers;
 
 import com.tothenew.ecommerceapp.dtos.ProductVariationDTO;
+import com.tothenew.ecommerceapp.entities.product.ProductVariation;
 import com.tothenew.ecommerceapp.services.ProductVariationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -27,5 +26,11 @@ public class ProductVariationController {
         }
         return getMessage;
     }
+    @GetMapping("/view/{id}")
+    public ProductVariation viewProductVariationById(@PathVariable Long id, HttpServletRequest request) {
+        return productVariationService.viewProductVariation(id,request);
+    }
+
+
 
 }

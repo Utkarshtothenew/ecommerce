@@ -3,11 +3,12 @@ package com.tothenew.ecommerceapp.entities.product;
 import com.tothenew.ecommerceapp.entities.utils.HashMapConverter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Map;
 
 @Entity
-public class ProductVariation {
+public class ProductVariation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
