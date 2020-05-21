@@ -3,9 +3,13 @@ package com.tothenew.ecommerceapp.controllers;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.tothenew.ecommerceapp.dtos.ProductDTO;
 import com.tothenew.ecommerceapp.entities.product.Product;
-import com.tothenew.ecommerceapp.services.RedisService;
+//import com.tothenew.ecommerceapp.services.RedisService;
+import com.tothenew.ecommerceapp.repositories.ProductRepo;
 import com.tothenew.ecommerceapp.services.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -16,14 +20,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("/product")
 public class ProductController {
     @Autowired
     ProductService productService;
 
+//    @Autowired
+//    RedisService redisService;
+
     @Autowired
-    RedisService redisService;
+    ProductRepo productRepo;
+
+    private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     @PostMapping("/add")
     public String addProduct(@RequestParam("name") String name, @RequestParam("brand") String brand, @RequestParam("categoryId") Long categoryId, @RequestParam("desc") Optional<String> desc, @RequestParam(name = "isCancellable") Optional<Boolean> isCancellable, @RequestParam(name = "isReturnable") Optional<Boolean> isReturnable, String sellerEmail, HttpServletResponse response, HttpServletRequest request) {
@@ -60,13 +70,16 @@ public class ProductController {
 
     }
 
-    @Cacheable(value= "allProducts")
+    @Cacheable(value= "allProducts",key = "#id")
     @GetMapping("/view/{id}")
-    public Product viewById(@PathVariable Long Id,HttpServletRequest request){
-        Optional<Product> products=redisService.findById(Id);
-        return products.get();
+    public ProductDTO viewById(@PathVariable Long id, HttpServletRequest request){
+
+        LOG.info("Getting user with ID {}.", id);
+
+        return productService.viewProduct(id);
 
     }
+
     @PutMapping("/admin/activate/{productId}")
     public String activateProduct(@PathVariable Long productId,HttpServletResponse response) {
         String getMessage = productService.activateDeactivateProduct(productId,true);

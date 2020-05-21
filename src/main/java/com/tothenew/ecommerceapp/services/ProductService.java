@@ -1,8 +1,7 @@
 package com.tothenew.ecommerceapp.services;
 
-import com.tothenew.ecommerceapp.entities.category.Category;
+import com.tothenew.ecommerceapp.dtos.ProductDTO;
 import com.tothenew.ecommerceapp.entities.product.Product;
-import com.tothenew.ecommerceapp.entities.product.ProductVariation;
 import com.tothenew.ecommerceapp.entities.users.Seller;
 import com.tothenew.ecommerceapp.exceptions.ResourceNotFoundException;
 import com.tothenew.ecommerceapp.repositories.CategoryRepo;
@@ -11,10 +10,7 @@ import com.tothenew.ecommerceapp.repositories.ProductVariationRepo;
 import com.tothenew.ecommerceapp.repositories.SellerRepo;
 import com.tothenew.ecommerceapp.utils.SendEmail;
 import com.tothenew.ecommerceapp.utils.UserEmailFromToken;
-import org.modelmapper.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +36,8 @@ public class ProductService {
 
     @Autowired
     ProductVariationRepo productVariationRepo;
+
+
 
     public String addProduct(HttpServletRequest request, String name, String brand, Long categoryId, Optional<String> desc, Optional<Boolean> isCancellable, Optional<Boolean> isReturnable,String sellerEmail) {
         Product product = new Product();
@@ -91,6 +89,16 @@ public class ProductService {
         return (List<Product>) productRepo.findAll();
 
     }
+     public ProductDTO viewProduct(Long id){
+        Product product= productRepo.findById(id).get();
+            ProductDTO productDTO=new ProductDTO();
+            productDTO.setId(product.getId());
+            productDTO.setName(product.getName());
+            productDTO.setBrand(product.getBrand());
+
+            return productDTO;
+
+     }
 
     public String activateDeactivateProduct(Long productId,Boolean activeStatus){
         Optional<Product> product = productRepo.findById(productId);
