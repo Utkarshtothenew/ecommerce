@@ -18,10 +18,13 @@ public interface ProductRepo extends CrudRepository<Product, Long> {
 
 
     List<Product> findAll();
-    @Query(value = "select * from product WHERE   created_date >= NOW() - INTERVAL 1 DAY",nativeQuery = true)
-    List<Product> findProductsCreatedInLast24Hours();
+    @Query(value = "select * from product where created_date >= :date - INTERVAL 1 DAY AND seller_user_id=:id",nativeQuery = true)
+    List<Product> findProductsCreatedInLast24Hours(@Param("date")String date,@Param("id")Long id);
 
     @Query(value = "select * from product where category_id=:id",nativeQuery = true)
     List<Product> findByCategoryId(@Param("id") Long id);
 
+
+    @Query(value = "select * from product WHERE   created_date >= NOW()- INTERVAL 1 DAY",nativeQuery = true)
+    List<Product> findAllProductsCreatedInLast24Hours();
 }

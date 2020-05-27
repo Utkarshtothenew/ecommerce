@@ -11,16 +11,19 @@ import com.tothenew.ecommerceapp.entities.product.Product;
 //import com.tothenew.ecommerceapp.services.RedisService;
 import com.tothenew.ecommerceapp.repositories.ProductRepo;
 import com.tothenew.ecommerceapp.services.ProductService;
+import com.tothenew.ecommerceapp.services.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,8 +109,8 @@ public class ProductController {
         return getMessage;
     }
 
-    @GetMapping("/productsCreatedIn24Hours")
-    public void exportCSV(HttpServletResponse response) throws Exception {
+    @GetMapping("/productsCreatedIn24Hours/{date}/{id}")
+    public void exportCSV(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date, @PathVariable Long id, HttpServletResponse response) throws Exception {
 
         String filename = "products.csv";
 
@@ -122,7 +125,8 @@ public class ProductController {
                 .build();
 
 
-        writer.write(productRepo.findProductsCreatedInLast24Hours());
+        String dateString=date.toString();
+        writer.write(productRepo.findProductsCreatedInLast24Hours(dateString,id));
 
     }
 
