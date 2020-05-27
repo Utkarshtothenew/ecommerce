@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,8 +46,11 @@ public class ProductService {
         product.setBrand(brand);
         product.setActive(false);
         product.setDeleted(false);
+        product.setCreatedDate(new Date());
         Seller seller = sellerRepo.findByEmail(sellerEmail);
         product.setSeller(seller);
+
+
 
         if (desc.isPresent()) {
             product.setDescription(desc.get());
@@ -64,7 +68,6 @@ public class ProductService {
             product.setReturnable(true);
         }
         seller.getProducts().add(product);
-
 
         productRepo.save(product);
 

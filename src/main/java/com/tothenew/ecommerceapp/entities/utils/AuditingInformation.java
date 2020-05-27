@@ -1,11 +1,10 @@
 package com.tothenew.ecommerceapp.entities.utils;
 
 import javax.persistence.Embeddable;
-import java.io.Serializable;
 import java.util.Date;
 
 @Embeddable
-public class AuditingInformation implements Serializable {
+public class AuditingInformation {
 
     private Date dateCreated;
     private Date lastUpdated;

@@ -3,6 +3,9 @@ package com.tothenew.ecommerceapp.controllers;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.tothenew.ecommerceapp.dtos.ProductDTO;
 import com.tothenew.ecommerceapp.entities.product.Product;
 //import com.tothenew.ecommerceapp.services.RedisService;
@@ -12,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
@@ -100,6 +104,26 @@ public class ProductController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
         return getMessage;
+    }
+
+    @GetMapping("/productsCreatedIn24Hours")
+    public void exportCSV(HttpServletResponse response) throws Exception {
+
+        String filename = "products.csv";
+
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + filename + "\"");
+
+        StatefulBeanToCsv<Product> writer = new StatefulBeanToCsvBuilder<Product>(response.getWriter())
+                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+                .withOrderedResults(false)
+                .build();
+
+
+        writer.write(productRepo.findProductsCreatedInLast24Hours());
+
     }
 
 
