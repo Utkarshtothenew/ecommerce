@@ -14,23 +14,28 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@Service
+@Component
 public class Scheduler {
     @Autowired
     ProductRepo productRepo;
 
-    private JavaMailSender javaMailSender;
+    @Autowired
+    JavaMailSender javaMailSender;
 
 
-    @Scheduled(cron = "0 31 1/12 * * ?")
+ //   @Scheduled(cron = "0 0 0 * * ?")
+
+    @Scheduled(fixedRateString = "${scheduler.timeInterval.mail}")
     public void sendEmailToSeller() {
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -40,7 +45,10 @@ public class Scheduler {
             mailMessage.setTo(i.getSeller().getEmail());
             mailMessage.setSubject("Products Created on " + new Date());
 
-            mailMessage.setText("http://localhost:8080/productsCreatedIn24Hours/"+new Date()+"/"+i.getSeller().getId());
+            Date date = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String strDate = formatter.format(date);
+            mailMessage.setText("http://localhost:8080/product/productsCreatedIn24Hours/"+i.getSeller().getId()+"/"+strDate);
             mailMessage.setFrom("ecommerceapp@gmail.com");
 
             javaMailSender.send(mailMessage);

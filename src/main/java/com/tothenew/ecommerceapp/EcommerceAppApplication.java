@@ -11,13 +11,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication
-//        (exclude = {RedisRepositoriesAutoConfiguration.class})
 @EnableAsync
 @EnableCaching
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
+@EnableScheduling
 public class EcommerceAppApplication {
 
     public static void main(String[] args) {

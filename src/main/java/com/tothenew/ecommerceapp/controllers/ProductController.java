@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -109,8 +110,8 @@ public class ProductController {
         return getMessage;
     }
 
-    @GetMapping("/productsCreatedIn24Hours/{date}/{id}")
-    public void exportCSV(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date, @PathVariable Long id, HttpServletResponse response) throws Exception {
+    @GetMapping("/productsCreatedIn24Hours/{id}/{date}")
+    public void exportCSV(@PathVariable Long id, @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date date, HttpServletResponse response) throws Exception {
 
         String filename = "products.csv";
 
@@ -125,8 +126,13 @@ public class ProductController {
                 .build();
 
 
-        String dateString=date.toString();
-        writer.write(productRepo.findProductsCreatedInLast24Hours(dateString,id));
+//        //Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(date);
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
+        String strDate = sdfDate.format(date);
+        LOG.info("date "+strDate);
+        writer.write(productRepo.findProductsCreatedInLast24Hours(strDate,id));
+        LOG.info("Success");
+
 
     }
 
