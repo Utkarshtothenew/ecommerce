@@ -110,31 +110,30 @@ public class ProductController {
         return getMessage;
     }
 
-    @GetMapping("/productsCreatedIn24Hours/{id}/{date}")
-    public void exportCSV(@PathVariable Long id, @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date date, HttpServletResponse response) throws Exception {
-
-        String filename = "products.csv";
-
-        response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + filename + "\"");
-
-        StatefulBeanToCsv<Product> writer = new StatefulBeanToCsvBuilder<Product>(response.getWriter())
-                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
-                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
-                .withOrderedResults(false)
-                .build();
-
-
-//        //Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(date);
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//dd/MM/yyyy
-        String strDate = sdfDate.format(date);
-        LOG.info("date "+strDate);
-        writer.write(productRepo.findProductsCreatedInLast24Hours(strDate,id));
-        LOG.info("Success");
-
-
-    }
+//    @GetMapping("/productsCreatedIn24Hours/{id}/{date}")
+//    public void exportCSV(@PathVariable Long id, @PathVariable @DateTimeFormat(pattern="yyyy-MM-dd") Date date, HttpServletResponse response) throws Exception {
+//
+//        String filename = "products.csv";
+//
+//        response.setContentType("text/csv");
+//        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+//                "attachment; filename=\"" + filename + "\"");
+//
+//        StatefulBeanToCsv<Product> writer = new StatefulBeanToCsvBuilder<Product>(response.getWriter())
+//                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+//                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+//                .withOrderedResults(false)
+//                .build();
+//
+//
+//        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String strDate = sdfDate.format(date);
+//        LOG.info("date "+strDate);
+//        writer.write(productRepo.findProductsCreatedInLast24Hours(strDate,id));
+//        LOG.info("Success");
+//
+//
+//    }
 
 
     }
